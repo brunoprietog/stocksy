@@ -10,7 +10,7 @@ module Stocksy::Asset::Profitability
       "YTD" => profitability_from(Date.today.beginning_of_year),
       "1Y" => profitability_ago(1.year),
       "5Y" => profitability_ago(5.years)
-    }
+    }.compact
   end
 
   private
@@ -31,5 +31,7 @@ module Stocksy::Asset::Profitability
     final_price = time_series_dayly[final_date.to_s].close.to_f
     profitability = ((final_price - initial_price) / initial_price) * 100
     profitability.round(2)
+  rescue Stocksy::Error
+    nil
   end
 end
